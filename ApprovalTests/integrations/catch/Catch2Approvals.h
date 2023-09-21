@@ -15,15 +15,17 @@
 #define APPROVAL_TESTS_INCLUDE_CPPS
 
 // begin-snippet: required_header_for_catch
-#include <catch2/catch.hpp>
+#include <catch2/catch_test_case_info.hpp>
+#include <catch2/reporters/catch_reporter_event_listener.hpp>
+#include <catch2/reporters/catch_reporter_registrars.hpp>
 // end-snippet
 
 //namespace ApprovalTests {
-struct Catch2ApprovalListener : Catch::TestEventListenerBase
+struct Catch2ApprovalListener : Catch::EventListenerBase
 {
     ApprovalTests::TestName currentTest;
-    using TestEventListenerBase::
-        TestEventListenerBase; // This using allows us to use all base-class constructors
+    using EventListenerBase::
+        EventListenerBase; // This using allows us to use all base-class constructors
     virtual void testCaseStarting(Catch::TestCaseInfo const& testInfo) override
     {
 
@@ -58,10 +60,10 @@ CATCH_REGISTER_LISTENER(Catch2ApprovalListener)
 #ifdef TEST_COMMIT_REVERT_CATCH
 
 //namespace ApprovalTests {
-struct Catch2TestCommitRevert : Catch::TestEventListenerBase
+struct Catch2TestCommitRevert : Catch::EventListenerBase
 {
-    using TestEventListenerBase::
-        TestEventListenerBase; // This using allows us to use all base-class constructors
+    using EventListenerBase::
+        EventListenerBase; // This using allows us to use all base-class constructors
     virtual void testRunEnded(Catch::TestRunStats const& testRunStats) override
     {
         bool commit = testRunStats.totals.testCases.allOk();
